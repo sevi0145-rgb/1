@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blumenstrauss</title>
+<style>
+body{margin:0;height:100vh;background:linear-gradient(#dff4ff,#d2efb8);overflow:hidden;font-family:sans-serif}
+.scene{position:relative;width:100%;height:100%}
+
+.bouquet{
+position:absolute;
+bottom:0;
+left:50%;
+transform:translateX(-50%);
+text-align:center;
+}
+
+.flower{
+font-size:60px;
+cursor:pointer;
+display:inline-block;
+margin:10px;
+transition:transform 0.2s;
+}
+
+.flower:active{
+transform:scale(1.2) rotate(10deg);
+}
+
+.critter{
+position:absolute;
+font-size:28px;
+pointer-events:none;
+animation:fly 2s forwards;
+}
+
+@keyframes fly{
+0%{opacity:1;transform:translate(0,0)}
+100%{opacity:0;transform:translate(var(--x),var(--y))}
+}
+</style>
+</head>
+<body>
+
+<div class="scene" id="scene">
+  <div class="bouquet" id="bouquet"></div>
+</div>
+
+<script>
+const scene=document.getElementById("scene");
+const bouquet=document.getElementById("bouquet");
+
+const flowers=[
+{emoji:"🌹",animal:"🐞"}, // Rose
+{emoji:"🌷",animal:"🦋"}, // Tulpe
+{emoji:"🌻",animal:"🐝"}, // Sonnenblume
+{emoji:"🌸",animal:"🦗"}, // Kirschblüte
+{emoji:"🌼",animal:"🐛"}, // Gänseblümchen
+{emoji:"🌺",animal:"🐜"}, // Hibiskus
+{emoji:"💐",animal:"🐦"}, // Strauss
+{emoji:"🥀",animal:"🪲"}  // Rose (andere)
+];
+
+flowers.forEach(f=>{
+  const el=document.createElement("div");
+  el.className="flower";
+  el.innerText=f.emoji;
+
+  el.onclick=()=>{
+    const rect=el.getBoundingClientRect();
+    const c=document.createElement("div");
+    c.className="critter";
+    c.innerText=f.animal;
+    c.style.left=rect.left+"px";
+    c.style.top=rect.top+"px";
+    c.style.setProperty("--x",(Math.random()*200-100)+"px");
+    c.style.setProperty("--y","-200px");
+    scene.appendChild(c);
+    setTimeout(()=>c.remove(),2000);
+  };
+
+  bouquet.appendChild(el);
+});
+</script>
+
+</body>
+</html>
